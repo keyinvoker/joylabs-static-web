@@ -2,7 +2,8 @@
 import '../styles/global.css';
 import Logo from '../components/Logo.astro';
 import { siteConfig } from '../data/site-config';
-const { title = 'JoyLabs Software Studio — Software that works beautifully', description = 'Modern websites, web applications, and custom dashboards for businesses in West Jakarta and beyond.' } = Astro.props;
+const { title = 'JoyLabs Software Studio — Software that works beautifully', description = 'A full-stack web development studio building practical websites, dashboards, and business applications.' } = Astro.props;
+const offers: Array<{ title: string; description: string; priceValue: string; priceKind: string }> = Astro.props.offers ?? [];
 const canonical = import.meta.env.PUBLIC_SITE_URL ? `${import.meta.env.PUBLIC_SITE_URL.replace(/\/$/, '')}${Astro.url.pathname}` : undefined;
 const address = import.meta.env.PUBLIC_BUSINESS_ADDRESS || 'West Jakarta, DKI Jakarta';
 const phone = siteConfig.whatsappNumber;
@@ -33,7 +34,14 @@ const hasFooterContact = waNumber.length >= 8 || Boolean(email || instagram || l
       '@context': 'https://schema.org', '@type': 'ProfessionalService', name: 'JoyLabs Software Studio', description,
       address: { '@type': 'PostalAddress', addressLocality: address, addressRegion: 'DKI Jakarta', addressCountry: 'ID' },
       ...(email ? { email } : {}), ...(phone ? { telephone: phone } : {}), ...(canonical ? { url: canonical } : {}),
-      makesOffer: [{ '@type': 'Offer', name: 'Landing Page Website', price: '3500000', priceCurrency: 'IDR' }, { '@type': 'Offer', name: 'Custom Software Development', price: '250000', priceCurrency: 'IDR', unitText: 'HOUR' }],
+      ...(offers.length ? { makesOffer: offers.map((offer) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: offer.title, description: offer.description },
+        price: offer.priceValue,
+        priceCurrency: 'IDR',
+        ...(offer.priceKind === 'hourly' ? { priceSpecification: { '@type': 'UnitPriceSpecification', price: offer.priceValue, priceCurrency: 'IDR', unitText: 'hour' } } : {}),
+        ...(offer.priceKind === 'starting' ? { description: `Starting price. ${offer.description}` } : {}),
+      })) } : {}),
     })} />
     <slot name="head" />
   </head>
