@@ -5,6 +5,6 @@
  * environment reliably passes them into the Astro build.
  */
 export const siteConfig = {
-  whatsappNumber: '08170888654',
+  whatsappNumber: '081770888654',
   emailAddress: 'hello.joylabs@gmail.com',
 } as const;
