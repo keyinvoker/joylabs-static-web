@@ -1,0 +1,69 @@
+---
+import '../styles/global.css';
+import Logo from '../components/Logo.astro';
+const { title = 'JoyLabs Software Studio — Software that works beautifully', description = 'Modern websites, web applications, and custom dashboards for businesses in West Jakarta and beyond.' } = Astro.props;
+const canonical = import.meta.env.PUBLIC_SITE_URL ? `${import.meta.env.PUBLIC_SITE_URL.replace(/\/$/, '')}${Astro.url.pathname}` : undefined;
+const address = import.meta.env.PUBLIC_BUSINESS_ADDRESS || 'West Jakarta, DKI Jakarta';
+const phone = import.meta.env.PUBLIC_WHATSAPP_NUMBER || '';
+const waNumber = phone.replace(/\D/g, '');
+const email = import.meta.env.PUBLIC_EMAIL_ADDRESS || '';
+const instagram = import.meta.env.PUBLIC_INSTAGRAM_URL || '';
+const linkedin = import.meta.env.PUBLIC_LINKEDIN_URL || '';
+const waHref = waNumber.length >= 8 ? `https://wa.me/${waNumber}?text=${encodeURIComponent('Hi JoyLabs, I would like to discuss a software project.')}` : '#contact';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101719" />
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    {canonical && <meta property="og:image" content={`${import.meta.env.PUBLIC_SITE_URL?.replace(/\/$/, '')}/og-image.svg`} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'ProfessionalService', name: 'JoyLabs Software Studio', description,
+      address: { '@type': 'PostalAddress', addressLocality: address, addressRegion: 'DKI Jakarta', addressCountry: 'ID' },
+      ...(email ? { email } : {}), ...(phone ? { telephone: phone } : {}), ...(canonical ? { url: canonical } : {}),
+      makesOffer: [{ '@type': 'Offer', name: 'Landing Page Website', price: '3500000', priceCurrency: 'IDR' }, { '@type': 'Offer', name: 'Custom Software Development', price: '250000', priceCurrency: 'IDR', unitText: 'HOUR' }],
+    })} />
+    <slot name="head" />
+  </head>
+  <body class="antialiased">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="shell nav-wrap"><Logo />
+        <nav id="site-nav" aria-label="Main navigation" class="nav-links">
+          <a href="#services">Services</a><a href="#work">Concepts</a><a href="#process">How it works</a><a href="#faq">FAQ</a>
+        </nav>
+        <div class="nav-actions"><a class="btn btn-primary nav-cta" href="#contact">Start a project <span aria-hidden="true">↗</span></a><button class="menu-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Open navigation menu"><span></span><span></span></button></div>
+      </div>
+    </header>
+    <slot />
+    <footer class="footer">
+      <div class="shell"><div class="footer-top"><div><Logo /><p class="footer-desc">Making admin dashboards less boring.<br />Useful software, with a little more joy.</p></div><div class="footer-links"><div><b>Explore</b><a href="#services">Services</a><a href="#pricing">Pricing</a><a href="#process">How it works</a></div><div><b>Say hello</b><a href={waHref} target={waNumber.length >= 8 ? '_blank' : undefined} rel={waNumber.length >= 8 ? 'noreferrer' : undefined}>{waNumber.length >= 8 ? 'WhatsApp' : 'WhatsApp · not configured'}</a><a href={email ? `mailto:${email}` : '#contact'}>{email || 'Email · not configured'}</a>{instagram && <a href={instagram} target="_blank" rel="noreferrer">Instagram ↗</a>}{linkedin && <a href={linkedin} target="_blank" rel="noreferrer">LinkedIn ↗</a>}<span>{address}</span></div><div><b>Information</b><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a></div></div></div><div class="footer-bottom"><span>© {new Date().getFullYear()} JoyLabs Software Studio</span><span>Thoughtful tools for real workflows.</span></div></div>
+    </footer>
+    <script>
+      const toggle = document.querySelector('.menu-toggle');
+      const nav = document.querySelector('#site-nav');
+      toggle?.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') !== 'true';
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+        nav?.classList.toggle('is-open', open);
+      });
+      nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+        nav.classList.remove('is-open'); toggle?.setAttribute('aria-expanded', 'false');
+      }));
+    </script>
+  </body>
+</html>
+<style>
+ .site-header{position:sticky;top:0;z-index:20;background:rgba(16,23,25,.88);backdrop-filter:blur(18px);border-bottom:1px solid rgba(222,236,226,.08)}.nav-wrap{height:76px;display:flex;align-items:center;justify-content:space-between}.nav-links{display:flex;gap:30px;margin-left:auto;margin-right:35px}.nav-links a{font-size:.81rem;color:#b3c0bb;transition:color .2s}.nav-links a:hover{color:#c7ff83}.nav-actions{display:flex;align-items:center;gap:10px}.nav-cta{padding:11px 16px;font-size:.78rem}.menu-toggle{display:none;background:none;border:1px solid var(--line);border-radius:11px;width:42px;height:42px;color:#fff;align-items:center;justify-content:center;flex-direction:column;gap:5px}.menu-toggle span{width:16px;height:1.5px;background:#eaf0eb}.footer{border-top:1px solid var(--line);padding:54px 0 22px}.footer-top{display:flex;justify-content:space-between;gap:50px;padding-bottom:44px}.footer-desc{color:#91a09c;font-size:.82rem;line-height:1.65;margin:18px 0 0}.footer-links{display:flex;gap:65px}.footer-links div{display:flex;flex-direction:column;gap:12px}.footer-links b{font-size:.74rem;margin-bottom:4px}.footer-links a,.footer-links span{color:#97a8a3;font-size:.78rem}.footer-links a:hover{color:#c7ff83}.footer-bottom{border-top:1px solid var(--line);padding-top:18px;display:flex;justify-content:space-between;color:#72827d;font-size:.7rem}@media(max-width:780px){.nav-links{gap:17px;margin-right:20px}.footer-links{gap:30px}}@media(max-width:650px){.nav-wrap{height:68px}.nav-cta{padding:10px 13px;font-size:.73rem}.menu-toggle{display:flex}.nav-links{display:none;position:absolute;top:68px;left:0;right:0;background:#121b1d;border-bottom:1px solid var(--line);padding:12px 22px 20px;margin:0;flex-direction:column;gap:0}.nav-links.is-open{display:flex}.nav-links a{padding:13px 0;border-bottom:1px solid rgba(222,236,226,.07)}.footer-top{flex-direction:column;gap:35px}.footer-links{display:grid;grid-template-columns:1fr 1fr;gap:28px}.footer-bottom{gap:12px;flex-direction:column}}
+</style>

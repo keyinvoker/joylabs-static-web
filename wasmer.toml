@@ -1,0 +1,9 @@
+[package]
+version = "0.1.0"
+description = "JoyLabs Software Studio service catalog"
+
+[dependencies]
+"wasmer/static-web-server" = "1"
+
+[fs]
+public = "dist"
