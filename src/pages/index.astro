@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import ServiceCard from '../components/ServiceCard.astro';
 const phone = import.meta.env.PUBLIC_WHATSAPP_NUMBER || '';
-const waNumber = phone.replace(/\D/g, '');
+const waNumber = phone.replace(/\D/g, '').replace(/^0/, '62');
 const email = import.meta.env.PUBLIC_EMAIL_ADDRESS || '';
 const rawPaymentLink = import.meta.env.PUBLIC_MIDTRANS_PAYMENT_LINK || '';
 const paymentUrl = (() => {
