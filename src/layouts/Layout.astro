@@ -1,12 +1,13 @@
 ---
 import '../styles/global.css';
 import Logo from '../components/Logo.astro';
+import { siteConfig } from '../data/site-config';
 const { title = 'JoyLabs Software Studio — Software that works beautifully', description = 'Modern websites, web applications, and custom dashboards for businesses in West Jakarta and beyond.' } = Astro.props;
 const canonical = import.meta.env.PUBLIC_SITE_URL ? `${import.meta.env.PUBLIC_SITE_URL.replace(/\/$/, '')}${Astro.url.pathname}` : undefined;
 const address = import.meta.env.PUBLIC_BUSINESS_ADDRESS || 'West Jakarta, DKI Jakarta';
-const phone = import.meta.env.PUBLIC_WHATSAPP_NUMBER || '';
+const phone = siteConfig.whatsappNumber;
 const waNumber = phone.replace(/\D/g, '').replace(/^0/, '62');
-const email = import.meta.env.PUBLIC_EMAIL_ADDRESS || '';
+const email = siteConfig.emailAddress;
 const instagram = import.meta.env.PUBLIC_INSTAGRAM_URL || '';
 const linkedin = import.meta.env.PUBLIC_LINKEDIN_URL || '';
 const waHref = waNumber.length >= 8 ? `https://wa.me/${waNumber}?text=${encodeURIComponent('Hi JoyLabs, I would like to discuss a software project.')}` : '#contact';

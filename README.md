@@ -4,10 +4,12 @@ Static service catalog built with Astro and Tailwind CSS. Astro generates files 
 
 ## Configure business details
 
-Copy `.env.example` to `.env` and set the public values before building:
+Public contact details currently live in [`src/data/site-config.ts`](src/data/site-config.ts) so they are reliably included in Wasmer's static build. Update that file to change the WhatsApp number or email address.
 
-- `PUBLIC_WHATSAPP_NUMBER`: WhatsApp number. Prefer international digits such as `6281234567890`; a local Indonesian number beginning with `0` is also converted to the `62` country code for the WhatsApp link.
-- `PUBLIC_EMAIL_ADDRESS`: displayed as the email contact and used for `mailto:` links.
+TODO: Move these values back to Wasmer Build environment variables after confirming that Wasmer passes them into the Astro build. These details are public contact information, not secrets.
+
+Other optional public values can be set in `.env` for local builds. The WhatsApp and email entries in `.env.example` are reserved for the future migration noted above; the site currently reads those two details from `src/data/site-config.ts`.
+
 - `PUBLIC_MIDTRANS_PAYMENT_LINK`: optional real Midtrans-hosted Payment Link. The site keeps the payment action informational while this is empty.
 - `PUBLIC_BUSINESS_ADDRESS`: defaults to West Jakarta, DKI Jakarta.
 - `PUBLIC_SITE_URL`: the final deployed origin, such as `https://your-real-app.wasmer.app`; used for canonical and Open Graph URL metadata.
@@ -36,7 +38,7 @@ The generated static website is in `dist/`. When `PUBLIC_SITE_URL` is set, the b
 
 Set up Wasmer CLI and log in, then run `npm run build` followed by `wasmer deploy` from this directory. The included `Staticfile` points Wasmer's static web server at `dist/`; `wasmer.toml` maps the same build directory.
 
-Astro renders this site as static HTML, so `PUBLIC_*` values are read while the site is built. In Wasmer's app **Settings → Environment Vars**, enable the **Build** (hammer) option for `PUBLIC_WHATSAPP_NUMBER`, `PUBLIC_EMAIL_ADDRESS`, `PUBLIC_BUSINESS_ADDRESS`, and any social or payment-link values you use. Runtime/server-only values are not available to the static page in the browser. Wasmer's [environment variable settings](https://docs.wasmer.io/edge/learn/secrets/) apply values to the app; they must also be available to the build for this static Astro site.
+Astro renders this site as static HTML, so `PUBLIC_*` values are read while the site is built. Wasmer Build variables must be available during that build; Runtime-only values are not available to the static page in the browser. The email and WhatsApp currently use `src/data/site-config.ts` because they were missing from the deployed HTML even after enabling Build variables.
 
 The Wasmer dashboard variables are used by a Wasmer-managed source/Git build. If you deploy a local checkout with `wasmer deploy`, first put the values in your local, untracked `.env`, then run `npm run build` and `wasmer deploy`; dashboard variables do not get passed back into the build running on your computer. After changing dashboard build variables, use **Save and Redeploy** and verify the deployment completed successfully. The location label may still show without any environment variable because the site intentionally falls back to `West Jakarta, DKI Jakarta` when `PUBLIC_BUSINESS_ADDRESS` is empty.
 
