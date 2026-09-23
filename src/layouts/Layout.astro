@@ -10,6 +10,7 @@ const email = import.meta.env.PUBLIC_EMAIL_ADDRESS || '';
 const instagram = import.meta.env.PUBLIC_INSTAGRAM_URL || '';
 const linkedin = import.meta.env.PUBLIC_LINKEDIN_URL || '';
 const waHref = waNumber.length >= 8 ? `https://wa.me/${waNumber}?text=${encodeURIComponent('Hi JoyLabs, I would like to discuss a software project.')}` : '#contact';
+const hasFooterContact = waNumber.length >= 8 || Boolean(email || instagram || linkedin);
 ---
 <!doctype html>
 <html lang="en">
@@ -47,7 +48,7 @@ const waHref = waNumber.length >= 8 ? `https://wa.me/${waNumber}?text=${encodeUR
     </header>
     <slot />
     <footer class="footer">
-      <div class="shell"><div class="footer-top"><div><Logo /><p class="footer-desc">Making admin dashboards less boring.<br />Useful software, with a little more joy.</p></div><div class="footer-links"><div><b>Explore</b><a href="#services">Services</a><a href="#pricing">Pricing</a><a href="#process">How it works</a></div><div><b>Say hello</b><a href={waHref} target={waNumber.length >= 8 ? '_blank' : undefined} rel={waNumber.length >= 8 ? 'noreferrer' : undefined}>{waNumber.length >= 8 ? 'WhatsApp' : 'WhatsApp · not configured'}</a><a href={email ? `mailto:${email}` : '#contact'}>{email || 'Email · not configured'}</a>{instagram && <a href={instagram} target="_blank" rel="noreferrer">Instagram ↗</a>}{linkedin && <a href={linkedin} target="_blank" rel="noreferrer">LinkedIn ↗</a>}<span>{address}</span></div><div><b>Information</b><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a></div></div></div><div class="footer-bottom"><span>© {new Date().getFullYear()} JoyLabs Software Studio</span><span>Thoughtful tools for real workflows.</span></div></div>
+      <div class="shell"><div class="footer-top"><div><Logo /><p class="footer-desc">Making admin dashboards less boring.<br />Useful software, with a little more joy.</p></div><div class="footer-links"><div><b>Explore</b><a href="#services">Services</a><a href="#pricing">Pricing</a><a href="#process">How it works</a></div>{hasFooterContact && <div><b>Say hello</b>{waNumber.length >= 8 && <a href={waHref} target="_blank" rel="noreferrer">WhatsApp</a>}{email && <a href={`mailto:${email}`}>{email}</a>}{instagram && <a href={instagram} target="_blank" rel="noreferrer">Instagram ↗</a>}{linkedin && <a href={linkedin} target="_blank" rel="noreferrer">LinkedIn ↗</a>}<span>{address}</span></div>}<div><b>Information</b><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a></div></div></div><div class="footer-bottom"><span>© {new Date().getFullYear()} JoyLabs Software Studio</span><span>Thoughtful tools for real workflows.</span></div></div>
     </footer>
     <script>
       const toggle = document.querySelector('.menu-toggle');
